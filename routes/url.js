@@ -10,4 +10,5 @@ router
 
 module.exports = router
 
-///doubt :-{router}
+///doubt :-{router} 
+/*The statement module.exports = {router} is incorrect because it attempts to export an object with a property named router, but the variable router itself is not defined within the scope of the module. */

@@ -3,10 +3,11 @@ const URL = require("../models/url");
 const { restrictTo } = require("../middleware/auth");
 const router = express.Router();
 
-
-router.get("/", restrictTo(["NORMAL"]), async (req, res) => {
-
+router.get("/", restrictTo(["NORMAL", "ADMIN"]), async (req, res) => {
     const allurls = await URL.find({ createdBy: req.user._id })
+    return res.render("home", { urls: allurls });
+}).get("/admin/urls", restrictTo(["ADMIN"]), async (req, res) => {
+    const allurls = await URL.find({})
     return res.render("home", { urls: allurls });
 })
 
@@ -15,7 +16,6 @@ router
         return res.render("signup")
     })
     .get("/login", (req, res) => {
-        console.log("static router login==>")
         return res.render("login")
     })
 

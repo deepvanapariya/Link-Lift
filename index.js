@@ -7,7 +7,7 @@ const cookieParser = require("cookie-parser")
 const urlRoutes = require("./routes/url");
 const staticRoutes = require("./routes/ststicRouter")
 const userRoutes = require('./routes/user');
-const { restrictToLoggedinUserOnly, checkAuth } = require("./middleware/auth");
+const { checkForAuthentication, restrictTo } = require("./middleware/auth");
 
 const app = express();
 const PORT = 8080;
@@ -20,14 +20,11 @@ app.set("views", path.resolve("./views"))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
+app.use(checkForAuthentication)
 
-app.use("/url", restrictToLoggedinUserOnly, urlRoutes);
+app.use("/url", restrictTo(["NORMAL"]), urlRoutes);
 app.use("/user", userRoutes)
-app.use("/", checkAuth, staticRoutes)
+app.use("/", staticRoutes)
 
-// app.get("/test", async (req, res) => {
-//     const allUrls = await URL.find({})
-//     return res.render("home", { urls: allUrls })
-// })
 
 app.listen(PORT, () => console.log(`Server Started at PORT ${PORT}`))

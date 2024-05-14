@@ -15,8 +15,12 @@ async function handleUserLogin(req, res) {
         return res.render('login', { error: "Invalid UserName or Password" })
     }
     const token = setUser(user)
-    res.cookie("uid", token)
-    return res.redirect("/");
+    // res.cookie("uid", token)
+    /*we can add specific domain here for cookie security,expire date
+    {domain:".deep.com"} any sub domain www.deep.com , blog.deep.com like gmail account
+    {domain:"deep.com"} only deep.com
+    */
+    return res.json({ token })
 }
 
 module.exports = { handleUserSignup, handleUserLogin }
